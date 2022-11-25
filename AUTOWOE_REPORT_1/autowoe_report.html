@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+    <title>AutoWoE validation report</title>
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+
+    /* Remove default bullets */
+    ul,
+    #myUL {
+        list-style-type: none;
+    }
+
+    /* Remove margins and padding from the parent ul */
+    #myUL {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Style the caret/arrow */
+    .caret {
+        cursor: pointer;
+        user-select: none;
+        /* Prevent text selection */
+    }
+
+    /* Create the caret/arrow with a unicode, and style it */
+    .caret::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+    .caret-down::before {
+        transform: rotate(90deg);
+    }
+
+    /* Hide the nested list */
+    .nested {
+        display: none;
+    }
+
+    /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+    .active {
+        display: block;
+    }
+</style>
+<script src="shap.js"></script>
+
+<body>
+    <div>
+        <h1>AutoWoE automatically generated report</h1>
+        <hr>
+        <h2>___НАЗВАНИЕ ОТЧЕТА___</h2>
+        <h3>Report version: 1</h3>
+        <h3>Москва, 2022</h3>
+        <hr>
+    </div>
+    <!--
+    <div>
+        <h2>Оглавление</h2>
+        <ul style="list-style-type:disc;">
+            <li>
+                <a href="#section1">1. Общие положения</a>
+                <ul style="list-style-type:circle;">
+                    <li><a href="#section1_1">1.1. Цель документа</a></li>
+                    <li><a href="#section1_2">1.2. Цели и задачи, для которых требуется построение модели</a></li>
+                    <li><a href="#section1_3">1.3. Структура документа</a></li>
+                    <li><a href="#section1_4">1.4. Сводная информация по модели</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#section2">2. Структура модели</a>
+                <ul style="list-style-type:circle;">
+                    <li><a href="#section2_1">2.1. Коэффициенты регрессионной модели</a></li>
+                    <li><a href="#section2_2">2.2. Разбиение признаков на бины и WoE значения в них</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#section3">3. Валидационные тесты</a>
+                <ul style="list-style-type:circle;">
+                    <li><a href="#section3_1">3.1. Отличия в числе пропусков между обучающей и тестовой выборкой</a>
+                    </li>
+                    <li><a href="#section3_2">3.2. Качество классификации по каждому из признаков финальной модели</a>
+                    </li>
+                    <li><a href="#section3_3">3.3. Доверительный интервал для индекса Джини</a></li>
+                    <li><a href="#section3_4">3.4. P-value на коэффициенты модели</a></li>
+                    <li><a href="#section3_5">3.5. Одномерный анализ</a></li>
+                    <li><a href="#section3_6">3.6. Проверка на монотонность</a></li>
+                    <li><a href="#section3_7">3.7. Проверка на люфт</a></li>
+                    <li><a href="#section3_8">3.8. Проверка на VIF</a></li>
+                    <li><a href="#section3_9">3.9. PSI</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#section4">4. Дополнительные отчеты</a>
+                <ul style="list-style-type:circle;">
+                    <li><a href="#section4_1">4.1. Статистики по бинам предсказания</a></li>
+                    <li><a href="#section4_2">4.2. Корреляции по факторам, вошедшим в модель</a></li>
+                    <li><a href="#section4_3">4.3. Скоринговая карта</a></li>
+                    <li><a href="#section4_4">4.4. История отбора признаков</a></li>
+                    <li><a href="#section4_5">4.5. Вклад каждой переменной в модель</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    -->
+    <ul id="myUL">
+        <li>
+            <h2 class="caret caret-down" id="section1">1. General Provisions</h2>
+            <ul class="nested active">
+                <li>
+                    <h3 class="caret" id="section1_1">1.1. Purpose of the Document</h3>
+                    <ul class="nested">
+                        <p>This report is made to ensure the continuity of business processes, preserve and
+                            share internal organization expertise within the Group, as well as to prove the feasibility
+                            and validity of the developed model.</p>
+                        <p>To achieve the goals, the Report provides insights into some essential methodological
+                            approaches to modeling.</p>
+                    </ul>
+                </li>
+                <li>
+                    <h3 class="caret" id="section1_2">1.2. Goals and Tasks which Require Building a Model</h3>
+                    <ul class="nested">
+                        <li>
+                            <p>___ЦЕЛЬ ПОСТРОЕНИЯ МОДЕЛИ___</p>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h3 class="caret" id="section1_3">1.3. Document Structure</h3>
+                    <ul class="nested">
+                        <p>The report has the following structure:</p>
+                        <ul style="list-style-type:disc;">
+                            <li>Section <a href="#section2">Model structure</a> contains model description:
+                                features,
+                                coefficients of the regression model, splitting features into bins.
+                            </li>
+                            <li>Section <a href="#section3">Validation tests</a> contains information about validation
+                                tests.
+                            </li>
+
+                        </ul>
+                    </ul>
+                </li>
+                <li>
+                    <h3 class="caret" id="section1_4">1.4. Model Summary</h3>
+                    <ul class="nested">
+                        <p>Key model identifiers are given in Table 1.</p>
+                        <h4>Table 1. Model identifiers</h4>
+                        <table style="width:100%">
+                            <tr>
+                                <th width="30%">Parameter</th>
+                                <th width="70%">Value</th>
+                            </tr>
+                            <tr>
+                                <td><b>Model name / ID</b></td>
+                                <td>___НАЗВАНИЕ МОДЕЛИ___</td>
+                            </tr>
+                            <tr>
+                                <td><b>Report version</b></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td><b>Model customer</b></td>
+                                <td>___ЗАКАЗЧИК___</td>
+                            </tr>
+                            <tr>
+                                <td><b>Name of the Group member and high level department</b></td>
+                                <td>___ПОДРАЗДЕЛЕНИЕ___</td>
+                            </tr>
+                            <tr>
+                                <td><b>Model developer (if an external developer is involved, it is necessary
+                                        to indicate Company's name)</b></td>
+                                <td>___РАЗРАБОТЧИК МОДЕЛИ___</td>
+                            </tr>
+                        </table>
+
+                        <p>Description and specification of datasets that are used to develop and test the model
+                            are presented in Table
+                            2.</p>
+                        <h4>Table 2. Summary of data sets used to build the model</h4>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="20%"><strong>Parameter</strong></td>
+                                <td width="16%"><strong>Training set</strong></td>
+                                <td width="16%"><strong>Test set</strong></td>
+                            </tr>
+                            <tr>
+                                <td><b>Target event description</b></td>
+                                <td colspan="5">___ОПИСАНИЕ ЦЕЛЕВОГО СОБЫТИЯ___</td>
+                            </tr>
+                            <tr>
+                                <td><b>Non-target event description</b></td>
+                                <td colspan="5">___ОПИСАНИЕ НЕЦЕЛЕВОГО СОБЫТИЯ___</td>
+                            </tr>
+                            <tr>
+                                <td><b>Observations count in sets</b></td>
+                                <td>105000</td>
+                                <td>45000</td>
+                            </tr>
+                            <tr>
+                                <td><b>Target events count</b></td>
+                                <td>7018</td>
+                                <td>3008</td>
+                            </tr>
+                            <tr>
+                                <td><b>Non-target events count</b></td>
+                                <td>97982</td>
+                                <td>41992</td>
+                            </tr>
+                            <tr>
+                                <td><b>Mean of target in sets</b></td>
+                                <td>6.68%</td>
+                                <td>6.68%</td>
+                            </tr>
+                        </table>
+
+                        <p>Predictions of the model trained on the training set are shown in Table 3.</p>
+                        <h4>Table 3. Model predictions (trained using the training set)</h4>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="20%"><strong>Parameter</strong></td>
+                                <td width="40%"><strong>Training set</strong></td>
+                                <td width="40%"><strong>Test set</strong></td>
+                            </tr>
+                            <tr>
+                                <td><b>AUC</b></td>
+                                <td>85.46%</td>
+                                <td>85.56%</td>
+                            </tr>
+                            <tr>
+                                <td><b>Gini</b></td>
+                                <td>70.92%</td>
+                                <td>71.11%</td>
+                            </tr>
+                        </table>
+                        <p><img src="AUC_test_plot_full.png" alt="AUC test plot full"></p>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h2 class="caret caret-down" id="section2">2. Model Structure</h2>
+            <ul class="nested active">
+                <li>
+                    <h3 class="caret" id="section2_1">2.1. Coefficients of the Regression Model</h3>
+                    <ul class="nested">
+                        <p>Coefficients of the regression model are shown in Table 4.</p>
+                        <h4>Table 4. Coefficients of the regression model</h4>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="40%"><strong>Feature name</strong></td>
+                                <td width="40%"><strong>Regression coefficient</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>-1.139524</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>-0.626482</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>-0.532347</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>-0.48291</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>-0.419146</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>-0.370475</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>-0.368744</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>-0.359499</td>
+                            </tr>
+                            
+                        </table>
+                        <p><img src="Model_weights.png" alt="Model weights"></p>
+                    </ul>
+                </li>
+                <li>
+                    <h3 class="caret" id="section2_2">2.2. Splitting Features into Bins and WoE Values ​​in them</h3>
+                    <ul class="nested">
+                        <p></p>
+                        
+                        <p><img src=RevolvingUtilizationOfUnsecuredLines_woe.png alt="RevolvingUtilizationOfUnsecuredLines_woe.png" /></p>
+                        
+                        <p><img src=NumberOfTime30-59DaysPastDueNotWorse_woe.png alt="NumberOfTime30-59DaysPastDueNotWorse_woe.png" /></p>
+                        
+                        <p><img src=NumberOfTimes90DaysLate_woe.png alt="NumberOfTimes90DaysLate_woe.png" /></p>
+                        
+                        <p><img src=age_woe.png alt="age_woe.png" /></p>
+                        
+                        <p><img src=NumberOfTime60-89DaysPastDueNotWorse_woe.png alt="NumberOfTime60-89DaysPastDueNotWorse_woe.png" /></p>
+                        
+                        <p><img src=MonthlyIncome_woe.png alt="MonthlyIncome_woe.png" /></p>
+                        
+                        <p><img src=NumberOfDependents_woe.png alt="NumberOfDependents_woe.png" /></p>
+                        
+                        <p><img src=DebtRatio_woe.png alt="DebtRatio_woe.png" /></p>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h2 class="caret caret-down" id="section3">3. Validation Tests</h2>
+            <ul class="nested active">
+                <li>
+                    <h3 class="caret" id="section3_1">3.1. Differences in the Number of Missing Values between Training
+                        and Test Sets
+                    </h3>
+                    <ul class="nested">
+                        <p>Statistics related to the number of missing values between training and test sets are shown
+                            in Table 5.</p>
+                        <h4>Table 5. Missing values</h4>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="40%"><strong>Feature name</strong></td>
+
+                                <td width="40%"><strong>Number of valid values in the training set</strong></td>
+                                <td width="40%"><strong>Number of valid values in the test set</strong></td>
+
+                                <td width="40%"><strong>Number of missing values in the training set</strong></td>
+                                <td width="40%"><strong>Number of missing values in the test set</strong></td>
+
+                                <td width="40%"><strong>Percentage of valid values in the training set</strong></td>
+                                <td width="40%"><strong>Percentage of valid values in the test set</strong></td>
+
+                                <td width="40%"><strong>Difference in percentage of valid values ​​in sets</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>105000</td>
+                                <td>45000</td>
+                                <td>0</td>
+
+                                <td>0</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>84277</td>
+                                <td>35992</td>
+                                <td>20723</td>
+
+                                <td>9008</td>
+                                <td>19.74</td>
+                                <td>20.02</td>
+                                <td>-0.28</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>102279</td>
+                                <td>43797</td>
+                                <td>2721</td>
+
+                                <td>1203</td>
+                                <td>2.59</td>
+                                <td>2.67</td>
+                                <td>-0.08</td>
+                            </tr>
+                            
+                        </table>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_2">3.2. Classification Quality for Each of the Final Model's
+                        features</h3>
+                    <ul class="nested">
+                        <p></p>
+                        
+                        <p><img src=RevolvingUtilizationOfUnsecuredLines_roc_auc.png alt="RevolvingUtilizationOfUnsecuredLines_roc_auc.png" /></p>
+                        
+                        <p><img src=NumberOfTime30-59DaysPastDueNotWorse_roc_auc.png alt="NumberOfTime30-59DaysPastDueNotWorse_roc_auc.png" /></p>
+                        
+                        <p><img src=NumberOfTimes90DaysLate_roc_auc.png alt="NumberOfTimes90DaysLate_roc_auc.png" /></p>
+                        
+                        <p><img src=age_roc_auc.png alt="age_roc_auc.png" /></p>
+                        
+                        <p><img src=NumberOfTime60-89DaysPastDueNotWorse_roc_auc.png alt="NumberOfTime60-89DaysPastDueNotWorse_roc_auc.png" /></p>
+                        
+                        <p><img src=MonthlyIncome_roc_auc.png alt="MonthlyIncome_roc_auc.png" /></p>
+                        
+                        <p><img src=NumberOfDependents_roc_auc.png alt="NumberOfDependents_roc_auc.png" /></p>
+                        
+                        <p><img src=DebtRatio_roc_auc.png alt="DebtRatio_roc_auc.png" /></p>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_3">3.3. Confidence Interval for Gini Index</h3>
+                    <ul class="nested">
+                        <span>95% confidence interval for Gini index:</span>
+                        <ul>
+                            <li>- In the <strong>training</strong> set: <strong>(0.7, 0.718)</strong></li>
+                            <li>- In the <strong>test</strong> set: <strong>(0.696, 0.724)</strong></li>
+                        </ul>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_4">3.4. P-value for Model Coefficients</h3>
+                    <ul class="nested">
+                        
+                        <h4>For features in training set:</h4>
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>P-value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>2e-06</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Intercept_</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                        </table>
+                        <h4>For features in the test set:</h4>
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>P-value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>0.001992</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>1.1e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Intercept_</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                        </table>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_5">3.5. One-dimensional Analysis</h3>
+                    <ul class="nested">
+                        <p>Gini for the training set</p>
+                        <p><img src="train_enc_ginis.png" alt="Train_enc ginis"></p>
+                        <p>Gini for the test set</p>
+                        <p><img src="test_enc_ginis.png" alt="Test_enc ginis"></p>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_6">3.6. Check for Monotony</h3>
+                    <ul class="nested">
+                        <p></p>
+                        
+                        <p><img src=RevolvingUtilizationOfUnsecuredLines_woe_bars.png alt="RevolvingUtilizationOfUnsecuredLines_woe_bars.png" /></p>
+                        
+                        <p><img src=NumberOfTime30-59DaysPastDueNotWorse_woe_bars.png alt="NumberOfTime30-59DaysPastDueNotWorse_woe_bars.png" /></p>
+                        
+                        <p><img src=NumberOfTimes90DaysLate_woe_bars.png alt="NumberOfTimes90DaysLate_woe_bars.png" /></p>
+                        
+                        <p><img src=age_woe_bars.png alt="age_woe_bars.png" /></p>
+                        
+                        <p><img src=NumberOfTime60-89DaysPastDueNotWorse_woe_bars.png alt="NumberOfTime60-89DaysPastDueNotWorse_woe_bars.png" /></p>
+                        
+                        <p><img src=MonthlyIncome_woe_bars.png alt="MonthlyIncome_woe_bars.png" /></p>
+                        
+                        <p><img src=NumberOfDependents_woe_bars.png alt="NumberOfDependents_woe_bars.png" /></p>
+                        
+                        <p><img src=DebtRatio_woe_bars.png alt="DebtRatio_woe_bars.png" /></p>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_7">3.7. Check for Backlash</h3>
+                    <ul class="nested">
+                        <p></p>
+                        
+                        <p><img src=RevolvingUtilizationOfUnsecuredLines_backlash_plot.png alt="RevolvingUtilizationOfUnsecuredLines_backlash_plot.png" /></p>
+                        
+                        <p><img src=NumberOfTime30-59DaysPastDueNotWorse_backlash_plot.png alt="NumberOfTime30-59DaysPastDueNotWorse_backlash_plot.png" /></p>
+                        
+                        <p><img src=NumberOfTimes90DaysLate_backlash_plot.png alt="NumberOfTimes90DaysLate_backlash_plot.png" /></p>
+                        
+                        <p><img src=age_backlash_plot.png alt="age_backlash_plot.png" /></p>
+                        
+                        <p><img src=NumberOfTime60-89DaysPastDueNotWorse_backlash_plot.png alt="NumberOfTime60-89DaysPastDueNotWorse_backlash_plot.png" /></p>
+                        
+                        <p><img src=MonthlyIncome_backlash_plot.png alt="MonthlyIncome_backlash_plot.png" /></p>
+                        
+                        <p><img src=NumberOfDependents_backlash_plot.png alt="NumberOfDependents_backlash_plot.png" /></p>
+                        
+                        <p><img src=DebtRatio_backlash_plot.png alt="DebtRatio_backlash_plot.png" /></p>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_8">3.8. Check for VIF</h3>
+                    <ul class="nested">
+                        
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>VIF value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>1.237139</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>1.236575</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>1.22668</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>1.20735</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>1.158722</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>1.101896</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>1.032385</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>1.022365</td>
+                            </tr>
+                            
+                        </table>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section3_9">3.9. PSI</h3>
+                    <ul class="nested">
+                        
+                        <p>Total PSI</p>
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>PSI value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.000378</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>0.000264</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.000229</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.00016</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>9e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>8.6e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>7.2e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>7.2e-05</td>
+                            </tr>
+                            
+                        </table>
+                        <p>PSI for non-target events</p>
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>PSI value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.000252</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.000248</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>0.000213</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.000158</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>8.1e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>7e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>3.6e-05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>3.4e-05</td>
+                            </tr>
+                            
+                        </table>
+                        <p>PSI for target events</p>
+                        <table>
+                            <tr>
+                                <td><strong>Feature name</strong></td>
+                                <td><strong>PSI value</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.00593</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.005668</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>0.002945</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>0.002925</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.002874</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>0.00179</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>0.001167</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>0.00071</td>
+                            </tr>
+                            
+                        </table>
+                        <p>Grouping by predictions on the training set (total)</p>
+                        <p><img src="binned_train_total.png" alt="binned_train_total"></p>
+                        <p>Grouping by predictions of target and non-target events on the training set</p>
+                        <p><img src="binned_train_posneg.png" alt="binned_train_posneg"></p>
+                        <p>Grouping by predictions on the test set (total)</p>
+                        <p><img src="binned_test_total.png" alt="binned_test_total"></p>
+                        <p>Grouping by predictions of target and non-target events on the test set</p>
+                        <p><img src="binned_test_posneg.png" alt="binned_test_posneg"></p>
+                        <p>PSI by grouped predictions of model</p>
+                        <table>
+                            <tr>
+                                <td><strong>Total PSI</strong></td>
+                                <td>7.5e-05</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PSI for non-target events</strong></td>
+                                <td>0.0001</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PSI for target events</strong></td>
+                                <td>0.003781</td>
+                            </tr>
+                        </table>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h2 class="caret caret-down" id="section4">4. Additional Reports</h2>
+            <ul class="nested active">
+
+                <li>
+                    <h3 class="caret" id="section4_1">4.1. Prediction Bin Statistics</h3>
+                    <ul class="nested">
+                        <h4>Mean value of the target on the training and test set</h4>
+                        <p><img src="binned_stats_target.png" alt="binned_stats_target"></p>
+                        <h4>Prediction statistics for the training set</h4>
+                        <p><img src="binned_stats_train.png" alt="binned_stats_train"></p>
+                        
+                        <table>
+                            <tr>
+                                <td><strong>ScoreBin</strong></td>
+                                <td><strong>count</strong></td>
+                                <td><strong>mean</strong></td>
+                                <td><strong>std</strong></td>
+                                <td><strong>min</strong></td>
+                                <td><strong>25%</strong></td>
+                                <td><strong>50%</strong></td>
+                                <td><strong>75%</strong></td>
+                                <td><strong>max</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.961, -4.556]</strong></td>
+                                <td>6583.0</td>
+                                <td>0.0091</td>
+                                <td>0.0009</td>
+                                <td>0.007</td>
+                                <td>0.0083</td>
+                                <td>0.0091</td>
+                                <td>0.0098</td>
+                                <td>0.0103</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.556, -4.158]</strong></td>
+                                <td>17535.0</td>
+                                <td>0.0128</td>
+                                <td>0.0014</td>
+                                <td>0.0104</td>
+                                <td>0.0116</td>
+                                <td>0.0126</td>
+                                <td>0.0139</td>
+                                <td>0.0154</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.158, -3.761]</strong></td>
+                                <td>22599.0</td>
+                                <td>0.0187</td>
+                                <td>0.0021</td>
+                                <td>0.0154</td>
+                                <td>0.0168</td>
+                                <td>0.0186</td>
+                                <td>0.0204</td>
+                                <td>0.0227</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-3.761, -3.363]</strong></td>
+                                <td>14399.0</td>
+                                <td>0.0274</td>
+                                <td>0.003</td>
+                                <td>0.0227</td>
+                                <td>0.0247</td>
+                                <td>0.0272</td>
+                                <td>0.0298</td>
+                                <td>0.0335</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-3.363, -2.966]</strong></td>
+                                <td>11108.0</td>
+                                <td>0.0406</td>
+                                <td>0.0045</td>
+                                <td>0.0335</td>
+                                <td>0.0367</td>
+                                <td>0.0403</td>
+                                <td>0.0442</td>
+                                <td>0.049</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.966, -2.568]</strong></td>
+                                <td>9507.0</td>
+                                <td>0.0594</td>
+                                <td>0.0062</td>
+                                <td>0.049</td>
+                                <td>0.0542</td>
+                                <td>0.0592</td>
+                                <td>0.0644</td>
+                                <td>0.0712</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.568, -2.171]</strong></td>
+                                <td>8643.0</td>
+                                <td>0.0854</td>
+                                <td>0.0087</td>
+                                <td>0.0712</td>
+                                <td>0.0776</td>
+                                <td>0.0852</td>
+                                <td>0.0928</td>
+                                <td>0.1024</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.171, -1.773]</strong></td>
+                                <td>4418.0</td>
+                                <td>0.1202</td>
+                                <td>0.0124</td>
+                                <td>0.1024</td>
+                                <td>0.1088</td>
+                                <td>0.1187</td>
+                                <td>0.13</td>
+                                <td>0.1451</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-1.773, -1.376]</strong></td>
+                                <td>2993.0</td>
+                                <td>0.1705</td>
+                                <td>0.0161</td>
+                                <td>0.1451</td>
+                                <td>0.1564</td>
+                                <td>0.169</td>
+                                <td>0.1835</td>
+                                <td>0.2017</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-1.376, -0.978]</strong></td>
+                                <td>2003.0</td>
+                                <td>0.2363</td>
+                                <td>0.0213</td>
+                                <td>0.2017</td>
+                                <td>0.2171</td>
+                                <td>0.2353</td>
+                                <td>0.255</td>
+                                <td>0.2731</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.978, -0.581]</strong></td>
+                                <td>1428.0</td>
+                                <td>0.3117</td>
+                                <td>0.025</td>
+                                <td>0.2734</td>
+                                <td>0.2906</td>
+                                <td>0.3083</td>
+                                <td>0.333</td>
+                                <td>0.3587</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.581, -0.183]</strong></td>
+                                <td>1079.0</td>
+                                <td>0.4024</td>
+                                <td>0.0267</td>
+                                <td>0.3588</td>
+                                <td>0.3788</td>
+                                <td>0.4007</td>
+                                <td>0.4235</td>
+                                <td>0.4543</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.183, 0.214]</strong></td>
+                                <td>807.0</td>
+                                <td>0.503</td>
+                                <td>0.0292</td>
+                                <td>0.4544</td>
+                                <td>0.4769</td>
+                                <td>0.5031</td>
+                                <td>0.5289</td>
+                                <td>0.5532</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(0.214, 0.612]</strong></td>
+                                <td>610.0</td>
+                                <td>0.597</td>
+                                <td>0.0278</td>
+                                <td>0.5539</td>
+                                <td>0.5707</td>
+                                <td>0.5961</td>
+                                <td>0.6215</td>
+                                <td>0.6482</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(0.612, 1.009]</strong></td>
+                                <td>454.0</td>
+                                <td>0.6915</td>
+                                <td>0.0243</td>
+                                <td>0.6486</td>
+                                <td>0.671</td>
+                                <td>0.6909</td>
+                                <td>0.7129</td>
+                                <td>0.7327</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.009, 1.407]</strong></td>
+                                <td>309.0</td>
+                                <td>0.7669</td>
+                                <td>0.0203</td>
+                                <td>0.733</td>
+                                <td>0.7475</td>
+                                <td>0.7668</td>
+                                <td>0.784</td>
+                                <td>0.8031</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.407, 1.804]</strong></td>
+                                <td>273.0</td>
+                                <td>0.8319</td>
+                                <td>0.0159</td>
+                                <td>0.8034</td>
+                                <td>0.8181</td>
+                                <td>0.8309</td>
+                                <td>0.8487</td>
+                                <td>0.8585</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.804, 2.202]</strong></td>
+                                <td>199.0</td>
+                                <td>0.8785</td>
+                                <td>0.0114</td>
+                                <td>0.8588</td>
+                                <td>0.8708</td>
+                                <td>0.8753</td>
+                                <td>0.8879</td>
+                                <td>0.9002</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(2.202, 2.599]</strong></td>
+                                <td>45.0</td>
+                                <td>0.9149</td>
+                                <td>0.0091</td>
+                                <td>0.9018</td>
+                                <td>0.907</td>
+                                <td>0.9142</td>
+                                <td>0.9228</td>
+                                <td>0.9295</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(2.599, 2.997]</strong></td>
+                                <td>8.0</td>
+                                <td>0.9387</td>
+                                <td>0.0072</td>
+                                <td>0.9309</td>
+                                <td>0.9348</td>
+                                <td>0.9362</td>
+                                <td>0.9401</td>
+                                <td>0.9524</td>
+                            </tr>
+                            
+                        </table>
+                        
+                        <h4>Prediction statistics for the test set</h4>
+                        <p><img src="binned_stats_test.png" alt="binned_stats_test"></p>
+                        
+                        <table>
+                            <tr>
+                                <td><strong>ScoreBin</strong></td>
+                                <td><strong>count</strong></td>
+                                <td><strong>mean</strong></td>
+                                <td><strong>std</strong></td>
+                                <td><strong>min</strong></td>
+                                <td><strong>25%</strong></td>
+                                <td><strong>50%</strong></td>
+                                <td><strong>75%</strong></td>
+                                <td><strong>max</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.961, -4.556]</strong></td>
+                                <td>2884.0</td>
+                                <td>0.0091</td>
+                                <td>0.0009</td>
+                                <td>0.007</td>
+                                <td>0.0083</td>
+                                <td>0.0091</td>
+                                <td>0.0098</td>
+                                <td>0.0103</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.556, -4.158]</strong></td>
+                                <td>7509.0</td>
+                                <td>0.0128</td>
+                                <td>0.0014</td>
+                                <td>0.0104</td>
+                                <td>0.0117</td>
+                                <td>0.0126</td>
+                                <td>0.0139</td>
+                                <td>0.0154</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-4.158, -3.761]</strong></td>
+                                <td>9518.0</td>
+                                <td>0.0187</td>
+                                <td>0.0021</td>
+                                <td>0.0154</td>
+                                <td>0.0167</td>
+                                <td>0.0186</td>
+                                <td>0.0204</td>
+                                <td>0.0227</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-3.761, -3.363]</strong></td>
+                                <td>6312.0</td>
+                                <td>0.0273</td>
+                                <td>0.003</td>
+                                <td>0.0227</td>
+                                <td>0.0246</td>
+                                <td>0.0271</td>
+                                <td>0.0297</td>
+                                <td>0.0335</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-3.363, -2.966]</strong></td>
+                                <td>4784.0</td>
+                                <td>0.0405</td>
+                                <td>0.0045</td>
+                                <td>0.0335</td>
+                                <td>0.0366</td>
+                                <td>0.0403</td>
+                                <td>0.0441</td>
+                                <td>0.049</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.966, -2.568]</strong></td>
+                                <td>4072.0</td>
+                                <td>0.0592</td>
+                                <td>0.0062</td>
+                                <td>0.049</td>
+                                <td>0.054</td>
+                                <td>0.0589</td>
+                                <td>0.0642</td>
+                                <td>0.0712</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.568, -2.171]</strong></td>
+                                <td>3745.0</td>
+                                <td>0.0857</td>
+                                <td>0.0088</td>
+                                <td>0.0712</td>
+                                <td>0.0782</td>
+                                <td>0.0852</td>
+                                <td>0.0931</td>
+                                <td>0.1024</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-2.171, -1.773]</strong></td>
+                                <td>1870.0</td>
+                                <td>0.1198</td>
+                                <td>0.0122</td>
+                                <td>0.1024</td>
+                                <td>0.1085</td>
+                                <td>0.1182</td>
+                                <td>0.1294</td>
+                                <td>0.145</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-1.773, -1.376]</strong></td>
+                                <td>1245.0</td>
+                                <td>0.1707</td>
+                                <td>0.0158</td>
+                                <td>0.1451</td>
+                                <td>0.1569</td>
+                                <td>0.1695</td>
+                                <td>0.1836</td>
+                                <td>0.2016</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-1.376, -0.978]</strong></td>
+                                <td>874.0</td>
+                                <td>0.235</td>
+                                <td>0.021</td>
+                                <td>0.2017</td>
+                                <td>0.2174</td>
+                                <td>0.2336</td>
+                                <td>0.2527</td>
+                                <td>0.2729</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.978, -0.581]</strong></td>
+                                <td>581.0</td>
+                                <td>0.3122</td>
+                                <td>0.0239</td>
+                                <td>0.2733</td>
+                                <td>0.2911</td>
+                                <td>0.3083</td>
+                                <td>0.3334</td>
+                                <td>0.3581</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.581, -0.183]</strong></td>
+                                <td>496.0</td>
+                                <td>0.4027</td>
+                                <td>0.0275</td>
+                                <td>0.359</td>
+                                <td>0.3784</td>
+                                <td>0.401</td>
+                                <td>0.4265</td>
+                                <td>0.4543</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(-0.183, 0.214]</strong></td>
+                                <td>323.0</td>
+                                <td>0.5033</td>
+                                <td>0.0281</td>
+                                <td>0.4549</td>
+                                <td>0.4811</td>
+                                <td>0.5023</td>
+                                <td>0.5287</td>
+                                <td>0.5532</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(0.214, 0.612]</strong></td>
+                                <td>266.0</td>
+                                <td>0.5975</td>
+                                <td>0.0275</td>
+                                <td>0.5534</td>
+                                <td>0.5723</td>
+                                <td>0.5962</td>
+                                <td>0.6214</td>
+                                <td>0.6483</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(0.612, 1.009]</strong></td>
+                                <td>171.0</td>
+                                <td>0.6924</td>
+                                <td>0.0235</td>
+                                <td>0.6487</td>
+                                <td>0.6738</td>
+                                <td>0.6923</td>
+                                <td>0.7102</td>
+                                <td>0.7328</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.009, 1.407]</strong></td>
+                                <td>130.0</td>
+                                <td>0.7692</td>
+                                <td>0.02</td>
+                                <td>0.7333</td>
+                                <td>0.7533</td>
+                                <td>0.7679</td>
+                                <td>0.7855</td>
+                                <td>0.8032</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.407, 1.804]</strong></td>
+                                <td>110.0</td>
+                                <td>0.8338</td>
+                                <td>0.0152</td>
+                                <td>0.8042</td>
+                                <td>0.8213</td>
+                                <td>0.8339</td>
+                                <td>0.8487</td>
+                                <td>0.8584</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(1.804, 2.202]</strong></td>
+                                <td>85.0</td>
+                                <td>0.8785</td>
+                                <td>0.0107</td>
+                                <td>0.8594</td>
+                                <td>0.8727</td>
+                                <td>0.8741</td>
+                                <td>0.8864</td>
+                                <td>0.8995</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(2.202, 2.599]</strong></td>
+                                <td>21.0</td>
+                                <td>0.9146</td>
+                                <td>0.0076</td>
+                                <td>0.9015</td>
+                                <td>0.9088</td>
+                                <td>0.9141</td>
+                                <td>0.9186</td>
+                                <td>0.9281</td>
+                            </tr>
+                            
+                            <tr>
+                                <td><strong>(2.599, 2.997]</strong></td>
+                                <td>4.0</td>
+                                <td>0.9352</td>
+                                <td>0.0046</td>
+                                <td>0.9323</td>
+                                <td>0.9329</td>
+                                <td>0.9333</td>
+                                <td>0.9357</td>
+                                <td>0.9421</td>
+                            </tr>
+                            
+                        </table>
+                        
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section4_2">4.2. Correlations by Factors Included in the Model</h3>
+                    <ul class="nested">
+                        <p><img src="corr_heatmap.png" alt="corr_heatmap"></p>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section4_3">4.3. Scorecard</h3>
+                    <ul class="nested">
+                        <table>
+                            <tr>
+                                <td><strong>Variable</strong></td>
+                                <td><strong>Value</strong></td>
+                                <td><strong>WOE</strong></td>
+                                <td><strong>COEF</strong></td>
+                                <td><strong>POINTS</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Intercept</td>
+                                <td>None</td>
+                                <td>None</td>
+                                <td>-2.6</td>
+                                <td>-2.6</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>RevolvingUtilizationOfUnsecuredLines <= 0.14</td>
+                                <td>1.32</td>
+                                <td>-0.63</td>
+                                <td>-0.83</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.14 < RevolvingUtilizationOfUnsecuredLines <= 0.3</td>
+                                <td>0.75</td>
+                                <td>-0.63</td>
+                                <td>-0.47</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.3 < RevolvingUtilizationOfUnsecuredLines <= 0.5</td>
+                                <td>0.14</td>
+                                <td>-0.63</td>
+                                <td>-0.09</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.5 < RevolvingUtilizationOfUnsecuredLines <= 0.7</td>
+                                <td>-0.41</td>
+                                <td>-0.63</td>
+                                <td>0.26</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.7 < RevolvingUtilizationOfUnsecuredLines <= 0.85</td>
+                                <td>-0.84</td>
+                                <td>-0.63</td>
+                                <td>0.52</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.85 < RevolvingUtilizationOfUnsecuredLines <= 0.93</td>
+                                <td>-1.09</td>
+                                <td>-0.63</td>
+                                <td>0.68</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.93 < RevolvingUtilizationOfUnsecuredLines <= 1.0</td>
+                                <td>-1.22</td>
+                                <td>-0.63</td>
+                                <td>0.77</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>RevolvingUtilizationOfUnsecuredLines > 1.0</td>
+                                <td>-2.1</td>
+                                <td>-0.63</td>
+                                <td>1.32</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-0.63</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse <= 0.0</td>
+                                <td>0.53</td>
+                                <td>-0.48</td>
+                                <td>-0.26</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>0.0 < NumberOfTime30-59DaysPastDueNotWorse <= 1.5</td>
+                                <td>-0.88</td>
+                                <td>-0.48</td>
+                                <td>0.43</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>1.5 < NumberOfTime30-59DaysPastDueNotWorse <= 3.5</td>
+                                <td>-1.74</td>
+                                <td>-0.48</td>
+                                <td>0.84</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse > 3.5</td>
+                                <td>-2.48</td>
+                                <td>-0.48</td>
+                                <td>1.2</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-0.48</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>NumberOfTimes90DaysLate <= 0.0</td>
+                                <td>0.4</td>
+                                <td>-0.53</td>
+                                <td>-0.21</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>0.0 < NumberOfTimes90DaysLate <= 1.5</td>
+                                <td>-1.97</td>
+                                <td>-0.53</td>
+                                <td>1.05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>NumberOfTimes90DaysLate > 1.5</td>
+                                <td>-2.84</td>
+                                <td>-0.53</td>
+                                <td>1.51</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-0.53</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>age <= 33.5</td>
+                                <td>-0.56</td>
+                                <td>-0.42</td>
+                                <td>0.23</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>33.5 < age <= 38.5</td>
+                                <td>-0.41</td>
+                                <td>-0.42</td>
+                                <td>0.17</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>38.5 < age <= 43.5</td>
+                                <td>-0.31</td>
+                                <td>-0.42</td>
+                                <td>0.13</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>43.5 < age <= 51.5</td>
+                                <td>-0.18</td>
+                                <td>-0.42</td>
+                                <td>0.07</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>51.5 < age <= 55.5</td>
+                                <td>-0.04</td>
+                                <td>-0.42</td>
+                                <td>0.01</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>55.5 < age <= 57.5</td>
+                                <td>0.12</td>
+                                <td>-0.42</td>
+                                <td>-0.05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>57.5 < age <= 63.5</td>
+                                <td>0.37</td>
+                                <td>-0.42</td>
+                                <td>-0.16</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>age > 63.5</td>
+                                <td>0.98</td>
+                                <td>-0.42</td>
+                                <td>-0.41</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-0.42</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse <= 0.0</td>
+                                <td>0.29</td>
+                                <td>-0.37</td>
+                                <td>-0.11</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>0.0 < NumberOfTime60-89DaysPastDueNotWorse <= 1.5</td>
+                                <td>-1.84</td>
+                                <td>-0.37</td>
+                                <td>0.68</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse > 1.5</td>
+                                <td>-2.76</td>
+                                <td>-0.37</td>
+                                <td>1.02</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-0.37</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>MonthlyIncome <= 3332.5</td>
+                                <td>-0.35</td>
+                                <td>-0.37</td>
+                                <td>0.13</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>3332.5 < MonthlyIncome <= 4600.5</td>
+                                <td>-0.23</td>
+                                <td>-0.37</td>
+                                <td>0.08</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>4600.5 < MonthlyIncome <= 5558.5</td>
+                                <td>-0.1</td>
+                                <td>-0.37</td>
+                                <td>0.04</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>5558.5 < MonthlyIncome <= 6666.5</td>
+                                <td>0.01</td>
+                                <td>-0.37</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>6666.5 < MonthlyIncome <= 7917.5</td>
+                                <td>0.21</td>
+                                <td>-0.37</td>
+                                <td>-0.08</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>7917.5 < MonthlyIncome <= 10000.5</td>
+                                <td>0.28</td>
+                                <td>-0.37</td>
+                                <td>-0.1</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>MonthlyIncome > 10000.5</td>
+                                <td>0.46</td>
+                                <td>-0.37</td>
+                                <td>-0.17</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>__NaN__</td>
+                                <td>0.21</td>
+                                <td>-0.37</td>
+                                <td>-0.08</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>NumberOfDependents <= 0.0</td>
+                                <td>0.13</td>
+                                <td>-0.36</td>
+                                <td>-0.05</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>0.0 < NumberOfDependents <= 1.5</td>
+                                <td>-0.11</td>
+                                <td>-0.36</td>
+                                <td>0.04</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>1.5 < NumberOfDependents <= 2.5</td>
+                                <td>-0.2</td>
+                                <td>-0.36</td>
+                                <td>0.07</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>2.5 < NumberOfDependents <= 3.5</td>
+                                <td>-0.31</td>
+                                <td>-0.36</td>
+                                <td>0.11</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>NumberOfDependents > 3.5</td>
+                                <td>-0.42</td>
+                                <td>-0.36</td>
+                                <td>0.15</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>__NaN__</td>
+                                <td>0.5</td>
+                                <td>-0.36</td>
+                                <td>-0.18</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>DebtRatio <= 0.02</td>
+                                <td>0.24</td>
+                                <td>-1.14</td>
+                                <td>-0.28</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.02 < DebtRatio <= 0.35</td>
+                                <td>0.13</td>
+                                <td>-1.14</td>
+                                <td>-0.14</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.35 < DebtRatio <= 0.4</td>
+                                <td>0.06</td>
+                                <td>-1.14</td>
+                                <td>-0.07</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.4 < DebtRatio <= 0.42</td>
+                                <td>0.02</td>
+                                <td>-1.14</td>
+                                <td>-0.02</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.42 < DebtRatio <= 0.47</td>
+                                <td>-0.07</td>
+                                <td>-1.14</td>
+                                <td>0.08</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.47 < DebtRatio <= 0.51</td>
+                                <td>-0.08</td>
+                                <td>-1.14</td>
+                                <td>0.09</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>DebtRatio > 0.51</td>
+                                <td>-0.16</td>
+                                <td>-1.14</td>
+                                <td>0.18</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>__NaN_0__</td>
+                                <td>0</td>
+                                <td>-1.14</td>
+                                <td>0.0</td>
+                            </tr>
+                            
+                        </table>
+                        <br />
+                        <span>Missing values processing legend:</span>
+                        <ul>
+                            <li><strong>__NaN__</strong> - separate group with WoE evaluation</li>
+                            <li><strong>__NaN_0__</strong> - separate group with WoE = 0</li>
+                            <li><strong>__NaN_maxfreq__</strong> - added to the most frequent group without WoE
+                                evaluation</li>
+                            <li><strong>__NaN_maxp__</strong> - added to the group with maximum probability without WoE
+                                evaluation</li>
+                            <li><strong>__NaN_minp__</strong> - added to the group with minimum probability without WoE
+                                evaluation</li>
+                        </ul>
+                        <br />
+                        <span>Rare/unknown category processing legend:</span>
+                        <ul>
+                            <li><strong>__Small__</strong> - separate group with WoE evaluation</li>
+                            <li><strong>__Small_nan__</strong> - to the NaN group</li>
+                            <li><strong>__Small_0__</strong> - separate group with WoE = 0</li>
+                            <li><strong>__Small_maxfreq__</strong> - added to the most frequent group without WoE
+                                evaluation</li>
+                            <li><strong>__Small_maxp__</strong> - added to the group with maximum probability without
+                                WoE evaluation</li>
+                            <li><strong>__Small_minp__</strong> - added to the group with minimum probability without
+                                WoE evaluation</li>
+                        </ul>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section4_4">4.4. Feature Selection History</h3>
+                    <ul class="nested">
+                        <table>
+                            <tr>
+                                <td><strong>Feature</strong></td>
+                                <td><strong></strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>Selected; Gini = 0.08, IV = 0.02</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>Selected; Gini = 0.16, IV = 0.08</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>Selected; Gini = 0.1, IV = 0.04</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfOpenCreditLinesAndLoans</td>
+                                <td>Pruned during regression refit</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>Selected; Gini = 0.37, IV = 0.74</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>Selected; Gini = 0.24, IV = 0.6</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>Selected; Gini = 0.32, IV = 0.89</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberRealEstateLoansOrLines</td>
+                                <td>Pruned during regression refit</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>Selected; Gini = 0.56, IV = 1.15</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>Selected; Gini = 0.26, IV = 0.24</td>
+                            </tr>
+                            
+                        </table>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="caret" id="section4_5">4.5. Feature Contribution in the Model</h3>
+                    <ul class="nested">
+                        
+
+                        
+                        <table>
+                            <tr>
+                                <td><strong>Feature</strong></td>
+                                <td><strong>Contribution to ROC AUC</strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>DebtRatio</td>
+                                <td>0.0013</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MonthlyIncome</td>
+                                <td>0.0008</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfDependents</td>
+                                <td>0.0003</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime30-59DaysPastDueNotWorse</td>
+                                <td>0.0173</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTime60-89DaysPastDueNotWorse</td>
+                                <td>0.0059</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>NumberOfTimes90DaysLate</td>
+                                <td>0.014</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>RevolvingUtilizationOfUnsecuredLines</td>
+                                <td>0.0283</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>age</td>
+                                <td>0.0031</td>
+                            </tr>
+                            
+                        </table>
+                        
+
+                        
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <script type="text/javascript">
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+    <title>LAMA report</title>
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+
+    /* Remove default bullets */
+    ul,
+    #myUL {
+        list-style-type: none;
+    }
+
+    /* Remove margins and padding from the parent ul */
+    #myUL {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Style the caret/arrow */
+    .caret {
+        cursor: pointer;
+        user-select: none;
+        /* Prevent text selection */
+    }
+
+    /* Create the caret/arrow with a unicode, and style it */
+    .caret::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+    .caret-down::before {
+        transform: rotate(90deg);
+    }
+
+    /* Hide the nested list */
+    .nested {
+        display: none;
+    }
+
+    /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+    .active {
+        display: block;
+    }
+    
+</style>
+<!--
+<script src="shap.js"></script>
+
+-->
+
+<body>
+    <div>
+        <h1>LAMA report</h1>
+    </div>
+    <ul id="myUL">
+        
+            <p>This report was generated automatically.</p>
+        
+            <li>
+    <h2 class="caret caret-down" id="section1">Model overview</h2>
+    <ul class="nested active">
+        <li>
+            <h3 class="caret" id="section1_1">Model parameters</h3>
+            <ul class="nested">
+                <p>The following model is loaded: <b>TabularAutoML</b>.</p>
+                <p>Model parameters are described below:</p>
+
+                <table border="1"><tr><th>config_path</th><td>None</td></tr><tr><th>general_params</th><td><table border="1"><tr><th>use_algos</th><td>auto</td></tr><tr><th>nested_cv</th><td>False</td></tr><tr><th>skip_conn</th><td>True</td></tr><tr><th>return_all_predictions</th><td>False</td></tr><tr><th>weighted_blender_max_nonzero_coef</th><td>0.05</td></tr></table></td></tr><tr><th>reader_params</th><td><table border="1"><tr><th>samples</th><td>100000</td></tr><tr><th>max_nan_rate</th><td>0.999</td></tr><tr><th>max_constant_rate</th><td>0.999</td></tr><tr><th>cv</th><td>5</td></tr><tr><th>random_state</th><td>42</td></tr><tr><th>roles_params</th><td>None</td></tr><tr><th>n_jobs</th><td>4</td></tr><tr><th>advanced_roles</th><td>True</td></tr><tr><th>numeric_unique_rate</th><td>0.999</td></tr><tr><th>max_to_3rd_rate</th><td>1.1</td></tr><tr><th>binning_enc_rate</th><td>2</td></tr><tr><th>raw_decr_rate</th><td>1.1</td></tr><tr><th>max_score_rate</th><td>0.2</td></tr><tr><th>abs_score_val</th><td>0.04</td></tr><tr><th>drop_score_co</th><td>0.0</td></tr></table></td></tr><tr><th>read_csv_params</th><td><table border="1"><tr><th>decimal</th><td>.</td></tr><tr><th>sep</th><td>,</td></tr></table></td></tr><tr><th>nested_cv_params</th><td><table border="1"><tr><th>cv</th><td>5</td></tr><tr><th>n_folds</th><td>None</td></tr><tr><th>inner_tune</th><td>False</td></tr><tr><th>refit_tuner</th><td>True</td></tr></table></td></tr><tr><th>selection_params</th><td><table border="1"><tr><th>mode</th><td>1</td></tr><tr><th>importance_type</th><td>gain</td></tr><tr><th>fit_on_holdout</th><td>True</td></tr><tr><th>cutoff</th><td>0</td></tr><tr><th>feature_group_size</th><td>1</td></tr><tr><th>max_features_cnt_in_result</th><td>None</td></tr><tr><th>select_algos</th><td>&lt;class &#x27;list&#x27;&gt;</td></tr></table></td></tr><tr><th>tuning_params</th><td><table border="1"><tr><th>fit_on_holdout</th><td>True</td></tr><tr><th>max_tuning_iter</th><td>101</td></tr><tr><th>max_tuning_time</th><td>300</td></tr></table></td></tr><tr><th>lgb_params</th><td><table border="1"><tr><th>default_params</th><td><table border="1"><tr><th>num_threads</th><td>100</td></tr></table></td></tr><tr><th>freeze_defaults</th><td>False</td></tr></table></td></tr><tr><th>cb_params</th><td><table border="1"><tr><th>default_params</th><td><table border="1"><tr><th>task_type</th><td>CPU</td></tr><tr><th>thread_count</th><td>100</td></tr></table></td></tr><tr><th>freeze_defaults</th><td>False</td></tr></table></td></tr><tr><th>rf_params</th><td><table border="1"><tr><th>default_params</th><td>None</td></tr><tr><th>freeze_defaults</th><td>False</td></tr></table></td></tr><tr><th>linear_l2_params</th><td><table border="1"><tr><th>default_params</th><td></td></tr><tr><th>freeze_defaults</th><td>False</td></tr></table></td></tr><tr><th>gbm_pipeline_params</th><td><table border="1"><tr><th>top_intersections</th><td>4</td></tr><tr><th>max_intersection_depth</th><td>3</td></tr><tr><th>subsample</th><td>100000</td></tr><tr><th>auto_unique_co</th><td>10</td></tr><tr><th>multiclass_te_co</th><td>3</td></tr><tr><th>output_categories</th><td>False</td></tr></table></td></tr><tr><th>linear_pipeline_params</th><td><table border="1"><tr><th>top_intersections</th><td>4</td></tr><tr><th>max_intersection_depth</th><td>3</td></tr><tr><th>subsample</th><td>100000</td></tr><tr><th>auto_unique_co</th><td>50</td></tr><tr><th>multiclass_te_co</th><td>3</td></tr></table></td></tr><tr><th>timing_params</th><td><table border="1"><tr><th>mode</th><td>1</td></tr><tr><th>overhead</th><td>0.1</td></tr><tr><th>tuning_rate</th><td>0.7</td></tr></table></td></tr><tr><th>timer</th><td><table border="1"><tr><th>run_info</th><td></td></tr><tr><th>run_scores</th><td></td></tr><tr><th>tuning_rate</th><td>0.7</td></tr><tr><th>child_out_of_time</th><td>False</td></tr></table></td></tr><tr><th>memory_limit</th><td>16</td></tr><tr><th>cpu_limit</th><td>4</td></tr><tr><th>gpu_ids</th><td></td></tr><tr><th>task</th><td><table border="1"><tr><th>losses</th><td><table border="1"><tr><th>lgb</th><td><table border="1"><tr><th>fobj_name</th><td>binary</td></tr><tr><th>fobj</th><td>None</td></tr><tr><th>fobj_params</th><td></td></tr><tr><th>metric</th><td>auc</td></tr><tr><th>metric_params</th><td></td></tr><tr><th>metric_name</th><td>auc</td></tr><tr><th>feval</th><td>None</td></tr></table></td></tr><tr><th>sklearn</th><td><table border="1"><tr><th>flg_regressor</th><td>False</td></tr><tr><th>loss</th><td>logloss</td></tr><tr><th>loss_params</th><td>None</td></tr><tr><th>metric</th><td>auc</td></tr><tr><th>metric_func</th><td><table border="1"><tr><th>metric_func</th><td></td></tr><tr><th>m</th><td>1.0</td></tr><tr><th>bw_func</th><td></td></tr></table></td></tr><tr><th>metric_name</th><td>auc</td></tr></table></td></tr><tr><th>torch</th><td><table border="1"><tr><th>loss_params</th><td></td></tr><tr><th>loss</th><td><table border="1"><tr><th>training</th><td>True</td></tr><tr><th>flatten</th><td>False</td></tr><tr><th>log</th><td>False</td></tr></table></td></tr><tr><th>metric</th><td>auc</td></tr><tr><th>metric_func</th><td><table border="1"><tr><th>metric_func</th><td></td></tr><tr><th>m</th><td>1.0</td></tr><tr><th>bw_func</th><td></td></tr></table></td></tr><tr><th>metric_name</th><td>auc</td></tr></table></td></tr><tr><th>cb</th><td><table border="1"><tr><th>loss_params</th><td></td></tr><tr><th>fobj</th><td>None</td></tr><tr><th>fobj_name</th><td>Logloss</td></tr><tr><th>fobj_params</th><td></td></tr><tr><th>metric</th><td>None</td></tr><tr><th>metric_name</th><td>AUC</td></tr><tr><th>metric_params</th><td></td></tr></table></td></tr></table></td></tr><tr><th>metric_params</th><td></td></tr><tr><th>metric_func</th><td></td></tr><tr><th>metric_name</th><td>auc</td></tr><tr><th>greater_is_better</th><td>&lt;class &#x27;numpy.bool_&#x27;&gt;</td></tr></table></td></tr></table>
+            </ul>
+        </li>
+        <li>
+            <h3 class="caret" id="section1_2">Summary results</h3>
+            <ul class="nested">
+                
+                    <p>Results for data samples:</p>
+
+                    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>Evaluation parameter</th>
+      <th>Validation sample</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AUC-score</td>
+      <td>0.7529</td>
+    </tr>
+    <tr>
+      <td>Precision</td>
+      <td>0.2256</td>
+    </tr>
+    <tr>
+      <td>Recall</td>
+      <td>0.4116</td>
+    </tr>
+    <tr>
+      <td>F1-score</td>
+      <td>0.2914</td>
+    </tr>
+  </tbody>
+</table>
+                
+            </ul>
+        </li>
+    </ul>
+</li>
+        
+            <li>
+    <h2 class="caret caret-down" id="section2">Data overview</h2>
+    <ul class="nested active">
+        <li>
+            <h3 class="caret" id="section2_1">Train data summary</h3>
+            <ul class="nested">
+                <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Number of records</td>
+      <td>8000</td>
+    </tr>
+    <tr>
+      <td>Total number of features</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <td>Used features</td>
+      <td>109</td>
+    </tr>
+    <tr>
+      <td>Dropped features</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+            </ul>
+        </li>
+        <li>
+            <h3 class="caret" id="section2_2">Train data details</h3>
+            <ul class="nested">
+                <li>
+                    <h4 class="caret" id="section2_2_1">Numerical features</h4>
+                    <ul class="nested">
+                        
+                        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>Feature name</th>
+      <th>NaN ratio</th>
+      <th>min</th>
+      <th>quantile_25</th>
+      <th>average</th>
+      <th>median</th>
+      <th>quantile_75</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CNT_CHILDREN</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.42</td>
+      <td>0.00</td>
+      <td>1.00</td>
+      <td>7.00</td>
+    </tr>
+    <tr>
+      <td>AMT_INCOME_TOTAL</td>
+      <td>0.0000</td>
+      <td>27000.00</td>
+      <td>112500.00</td>
+      <td>168762.11</td>
+      <td>148500.00</td>
+      <td>202500.00</td>
+      <td>2475000.00</td>
+    </tr>
+    <tr>
+      <td>AMT_CREDIT</td>
+      <td>0.0000</td>
+      <td>45000.00</td>
+      <td>270000.00</td>
+      <td>597258.14</td>
+      <td>508495.50</td>
+      <td>808650.00</td>
+      <td>4050000.00</td>
+    </tr>
+    <tr>
+      <td>AMT_ANNUITY</td>
+      <td>0.0000</td>
+      <td>2164.50</td>
+      <td>16543.12</td>
+      <td>27057.16</td>
+      <td>24898.50</td>
+      <td>34258.50</td>
+      <td>225000.00</td>
+    </tr>
+    <tr>
+      <td>AMT_GOODS_PRICE</td>
+      <td>0.0010</td>
+      <td>45000.00</td>
+      <td>238500.00</td>
+      <td>537683.96</td>
+      <td>450000.00</td>
+      <td>679500.00</td>
+      <td>4050000.00</td>
+    </tr>
+    <tr>
+      <td>DAYS_BIRTH</td>
+      <td>0.0000</td>
+      <td>-25201.00</td>
+      <td>-19612.25</td>
+      <td>-15932.48</td>
+      <td>-15571.50</td>
+      <td>-12311.00</td>
+      <td>-7692.00</td>
+    </tr>
+    <tr>
+      <td>DAYS_EMPLOYED</td>
+      <td>0.0000</td>
+      <td>-16360.00</td>
+      <td>-2759.50</td>
+      <td>63877.03</td>
+      <td>-1169.00</td>
+      <td>-269.75</td>
+      <td>365243.00</td>
+    </tr>
+    <tr>
+      <td>DAYS_REGISTRATION</td>
+      <td>0.0000</td>
+      <td>-18758.00</td>
+      <td>-7465.50</td>
+      <td>-4937.19</td>
+      <td>-4446.50</td>
+      <td>-1929.75</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <td>DAYS_ID_PUBLISH</td>
+      <td>0.0000</td>
+      <td>-6199.00</td>
+      <td>-4294.00</td>
+      <td>-2981.56</td>
+      <td>-3220.50</td>
+      <td>-1706.75</td>
+      <td>-1.00</td>
+    </tr>
+    <tr>
+      <td>OWN_CAR_AGE</td>
+      <td>0.6637</td>
+      <td>0.00</td>
+      <td>5.00</td>
+      <td>11.93</td>
+      <td>9.00</td>
+      <td>15.00</td>
+      <td>65.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_EMP_PHONE</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>1.00</td>
+      <td>0.82</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_WORK_PHONE</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.20</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_CONT_MOBILE</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_PHONE</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.28</td>
+      <td>0.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_EMAIL</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>CNT_FAM_MEMBERS</td>
+      <td>0.0000</td>
+      <td>1.00</td>
+      <td>2.00</td>
+      <td>2.15</td>
+      <td>2.00</td>
+      <td>3.00</td>
+      <td>9.00</td>
+    </tr>
+    <tr>
+      <td>REGION_RATING_CLIENT</td>
+      <td>0.0000</td>
+      <td>1.00</td>
+      <td>2.00</td>
+      <td>2.05</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <td>REGION_RATING_CLIENT_W_CITY</td>
+      <td>0.0000</td>
+      <td>1.00</td>
+      <td>2.00</td>
+      <td>2.02</td>
+      <td>2.00</td>
+      <td>2.00</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <td>HOUR_APPR_PROCESS_START</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>10.00</td>
+      <td>12.09</td>
+      <td>12.00</td>
+      <td>14.00</td>
+      <td>22.00</td>
+    </tr>
+    <tr>
+      <td>REG_REGION_NOT_LIVE_REGION</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>REG_REGION_NOT_WORK_REGION</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LIVE_REGION_NOT_WORK_REGION</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.04</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>REG_CITY_NOT_LIVE_CITY</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>REG_CITY_NOT_WORK_CITY</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.23</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LIVE_CITY_NOT_WORK_CITY</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.18</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>EXT_SOURCE_1</td>
+      <td>0.5619</td>
+      <td>0.03</td>
+      <td>0.33</td>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td>0.67</td>
+      <td>0.94</td>
+    </tr>
+    <tr>
+      <td>EXT_SOURCE_2</td>
+      <td>0.0026</td>
+      <td>0.00</td>
+      <td>0.39</td>
+      <td>0.51</td>
+      <td>0.56</td>
+      <td>0.66</td>
+      <td>0.82</td>
+    </tr>
+    <tr>
+      <td>EXT_SOURCE_3</td>
+      <td>0.2040</td>
+      <td>0.00</td>
+      <td>0.36</td>
+      <td>0.51</td>
+      <td>0.53</td>
+      <td>0.67</td>
+      <td>0.88</td>
+    </tr>
+    <tr>
+      <td>APARTMENTS_AVG</td>
+      <td>0.4976</td>
+      <td>0.00</td>
+      <td>0.06</td>
+      <td>0.12</td>
+      <td>0.09</td>
+      <td>0.15</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>BASEMENTAREA_AVG</td>
+      <td>0.5766</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.09</td>
+      <td>0.08</td>
+      <td>0.11</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BEGINEXPLUATATION_AVG</td>
+      <td>0.4794</td>
+      <td>0.00</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.99</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BUILD_AVG</td>
+      <td>0.6611</td>
+      <td>0.00</td>
+      <td>0.69</td>
+      <td>0.76</td>
+      <td>0.76</td>
+      <td>0.82</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ELEVATORS_AVG</td>
+      <td>0.5245</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.00</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ENTRANCES_AVG</td>
+      <td>0.4943</td>
+      <td>0.00</td>
+      <td>0.07</td>
+      <td>0.15</td>
+      <td>0.14</td>
+      <td>0.21</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMAX_AVG</td>
+      <td>0.4879</td>
+      <td>0.00</td>
+      <td>0.17</td>
+      <td>0.23</td>
+      <td>0.17</td>
+      <td>0.33</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMIN_AVG</td>
+      <td>0.6749</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.23</td>
+      <td>0.21</td>
+      <td>0.38</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LANDAREA_AVG</td>
+      <td>0.5843</td>
+      <td>0.00</td>
+      <td>0.02</td>
+      <td>0.06</td>
+      <td>0.05</td>
+      <td>0.08</td>
+      <td>0.74</td>
+    </tr>
+    <tr>
+      <td>LIVINGAPARTMENTS_AVG</td>
+      <td>0.6797</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.10</td>
+      <td>0.07</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LIVINGAREA_AVG</td>
+      <td>0.4931</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.10</td>
+      <td>0.07</td>
+      <td>0.13</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAREA_AVG</td>
+      <td>0.5400</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.03</td>
+      <td>0.00</td>
+      <td>0.03</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>APARTMENTS_MODE</td>
+      <td>0.4976</td>
+      <td>0.00</td>
+      <td>0.06</td>
+      <td>0.11</td>
+      <td>0.08</td>
+      <td>0.15</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>BASEMENTAREA_MODE</td>
+      <td>0.5766</td>
+      <td>0.00</td>
+      <td>0.04</td>
+      <td>0.09</td>
+      <td>0.07</td>
+      <td>0.11</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BEGINEXPLUATATION_MODE</td>
+      <td>0.4794</td>
+      <td>0.00</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.99</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BUILD_MODE</td>
+      <td>0.6611</td>
+      <td>0.00</td>
+      <td>0.70</td>
+      <td>0.76</td>
+      <td>0.76</td>
+      <td>0.83</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>COMMONAREA_MODE</td>
+      <td>0.6937</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.04</td>
+      <td>0.02</td>
+      <td>0.05</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ELEVATORS_MODE</td>
+      <td>0.5245</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.07</td>
+      <td>0.00</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ENTRANCES_MODE</td>
+      <td>0.4943</td>
+      <td>0.00</td>
+      <td>0.07</td>
+      <td>0.14</td>
+      <td>0.14</td>
+      <td>0.21</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMAX_MODE</td>
+      <td>0.4879</td>
+      <td>0.00</td>
+      <td>0.17</td>
+      <td>0.22</td>
+      <td>0.17</td>
+      <td>0.33</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMIN_MODE</td>
+      <td>0.6749</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.23</td>
+      <td>0.21</td>
+      <td>0.38</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LANDAREA_MODE</td>
+      <td>0.5843</td>
+      <td>0.00</td>
+      <td>0.02</td>
+      <td>0.06</td>
+      <td>0.04</td>
+      <td>0.08</td>
+      <td>0.76</td>
+    </tr>
+    <tr>
+      <td>LIVINGAREA_MODE</td>
+      <td>0.4931</td>
+      <td>0.00</td>
+      <td>0.04</td>
+      <td>0.10</td>
+      <td>0.07</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAPARTMENTS_MODE</td>
+      <td>0.6921</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAREA_MODE</td>
+      <td>0.5400</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.03</td>
+      <td>0.00</td>
+      <td>0.03</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>APARTMENTS_MEDI</td>
+      <td>0.4976</td>
+      <td>0.00</td>
+      <td>0.06</td>
+      <td>0.12</td>
+      <td>0.09</td>
+      <td>0.15</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>BASEMENTAREA_MEDI</td>
+      <td>0.5766</td>
+      <td>0.00</td>
+      <td>0.04</td>
+      <td>0.09</td>
+      <td>0.07</td>
+      <td>0.11</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BEGINEXPLUATATION_MEDI</td>
+      <td>0.4794</td>
+      <td>0.00</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>0.99</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>YEARS_BUILD_MEDI</td>
+      <td>0.6611</td>
+      <td>0.00</td>
+      <td>0.70</td>
+      <td>0.76</td>
+      <td>0.77</td>
+      <td>0.83</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>COMMONAREA_MEDI</td>
+      <td>0.6937</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.05</td>
+      <td>0.02</td>
+      <td>0.05</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ELEVATORS_MEDI</td>
+      <td>0.5245</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.00</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>ENTRANCES_MEDI</td>
+      <td>0.4943</td>
+      <td>0.00</td>
+      <td>0.07</td>
+      <td>0.15</td>
+      <td>0.14</td>
+      <td>0.21</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMAX_MEDI</td>
+      <td>0.4879</td>
+      <td>0.00</td>
+      <td>0.17</td>
+      <td>0.23</td>
+      <td>0.17</td>
+      <td>0.33</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLOORSMIN_MEDI</td>
+      <td>0.6749</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.23</td>
+      <td>0.21</td>
+      <td>0.38</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LANDAREA_MEDI</td>
+      <td>0.5843</td>
+      <td>0.00</td>
+      <td>0.02</td>
+      <td>0.06</td>
+      <td>0.05</td>
+      <td>0.09</td>
+      <td>0.75</td>
+    </tr>
+    <tr>
+      <td>LIVINGAPARTMENTS_MEDI</td>
+      <td>0.6797</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.10</td>
+      <td>0.08</td>
+      <td>0.12</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>LIVINGAREA_MEDI</td>
+      <td>0.4931</td>
+      <td>0.00</td>
+      <td>0.05</td>
+      <td>0.11</td>
+      <td>0.07</td>
+      <td>0.13</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAPARTMENTS_MEDI</td>
+      <td>0.6921</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>TOTALAREA_MODE</td>
+      <td>0.4746</td>
+      <td>0.00</td>
+      <td>0.04</td>
+      <td>0.10</td>
+      <td>0.07</td>
+      <td>0.13</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>OBS_30_CNT_SOCIAL_CIRCLE</td>
+      <td>0.0039</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.38</td>
+      <td>0.00</td>
+      <td>2.00</td>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <td>OBS_60_CNT_SOCIAL_CIRCLE</td>
+      <td>0.0039</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.37</td>
+      <td>0.00</td>
+      <td>2.00</td>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <td>DAYS_LAST_PHONE_CHANGE</td>
+      <td>0.0000</td>
+      <td>-3753.00</td>
+      <td>-1561.25</td>
+      <td>-947.01</td>
+      <td>-737.50</td>
+      <td>-252.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_3</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.70</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_5</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.02</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_6</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.09</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_8</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.08</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_9</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_11</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_13</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_14</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_16</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_18</td>
+      <td>0.0000</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_HOUR</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>2.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_DAY</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.01</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_WEEK</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.03</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>4.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_MON</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.27</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>15.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_QRT</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.26</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>8.00</td>
+    </tr>
+    <tr>
+      <td>AMT_REQ_CREDIT_BUREAU_YEAR</td>
+      <td>0.1386</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.87</td>
+      <td>1.00</td>
+      <td>3.00</td>
+      <td>15.00</td>
+    </tr>
+  </tbody>
+</table>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <h4 class="caret" id="section2_2_2">Categorical features</h4>
+                    <ul class="nested">
+                        
+                        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>Feature name</th>
+      <th>NaN ratio</th>
+      <th>Number of unique values</th>
+      <th>Most frequent value</th>
+      <th>Occurance of most frequent</th>
+      <th>Least frequent value</th>
+      <th>Occurance of least frequent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NAME_CONTRACT_TYPE</td>
+      <td>0.0000</td>
+      <td>2</td>
+      <td>Cash loans</td>
+      <td>89.7%</td>
+      <td>Revolving loans</td>
+      <td>10.3%</td>
+    </tr>
+    <tr>
+      <td>CODE_GENDER</td>
+      <td>0.0000</td>
+      <td>2</td>
+      <td>F</td>
+      <td>66.2%</td>
+      <td>M</td>
+      <td>33.8%</td>
+    </tr>
+    <tr>
+      <td>FLAG_OWN_CAR</td>
+      <td>0.0000</td>
+      <td>2</td>
+      <td>N</td>
+      <td>66.4%</td>
+      <td>Y</td>
+      <td>33.6%</td>
+    </tr>
+    <tr>
+      <td>FLAG_OWN_REALTY</td>
+      <td>0.0000</td>
+      <td>2</td>
+      <td>Y</td>
+      <td>69.7%</td>
+      <td>N</td>
+      <td>30.3%</td>
+    </tr>
+    <tr>
+      <td>NAME_TYPE_SUITE</td>
+      <td>0.0044</td>
+      <td>7</td>
+      <td>Unaccompanied</td>
+      <td>81.0%</td>
+      <td>Group of people</td>
+      <td>0.1%</td>
+    </tr>
+    <tr>
+      <td>NAME_INCOME_TYPE</td>
+      <td>0.0000</td>
+      <td>6</td>
+      <td>Working</td>
+      <td>51.3%</td>
+      <td>Unemployed</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>NAME_EDUCATION_TYPE</td>
+      <td>0.0000</td>
+      <td>5</td>
+      <td>Secondary / secondary special</td>
+      <td>71.0%</td>
+      <td>Academic degree</td>
+      <td>0.1%</td>
+    </tr>
+    <tr>
+      <td>NAME_FAMILY_STATUS</td>
+      <td>0.0000</td>
+      <td>5</td>
+      <td>Married</td>
+      <td>63.2%</td>
+      <td>Widow</td>
+      <td>5.4%</td>
+    </tr>
+    <tr>
+      <td>NAME_HOUSING_TYPE</td>
+      <td>0.0000</td>
+      <td>6</td>
+      <td>House / apartment</td>
+      <td>88.2%</td>
+      <td>Co-op apartment</td>
+      <td>0.4%</td>
+    </tr>
+    <tr>
+      <td>REGION_POPULATION_RELATIVE</td>
+      <td>0.0000</td>
+      <td>78</td>
+      <td>0.035792</td>
+      <td>5.1%</td>
+      <td>0.001333</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>OCCUPATION_TYPE</td>
+      <td>0.3135</td>
+      <td>18</td>
+      <td>Laborers</td>
+      <td>25.6%</td>
+      <td>IT staff</td>
+      <td>0.2%</td>
+    </tr>
+    <tr>
+      <td>WEEKDAY_APPR_PROCESS_START</td>
+      <td>0.0000</td>
+      <td>7</td>
+      <td>TUESDAY</td>
+      <td>17.5%</td>
+      <td>SUNDAY</td>
+      <td>5.4%</td>
+    </tr>
+    <tr>
+      <td>ORGANIZATION_TYPE</td>
+      <td>0.0000</td>
+      <td>56</td>
+      <td>Business Entity Type 3</td>
+      <td>21.8%</td>
+      <td>Trade: type 4</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>COMMONAREA_AVG</td>
+      <td>0.6937</td>
+      <td>943</td>
+      <td>0</td>
+      <td>9.3%</td>
+      <td>0.1647</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAPARTMENTS_AVG</td>
+      <td>0.6921</td>
+      <td>81</td>
+      <td>0</td>
+      <td>56.5%</td>
+      <td>0.1622</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>LIVINGAPARTMENTS_MODE</td>
+      <td>0.6797</td>
+      <td>362</td>
+      <td>0.0735</td>
+      <td>4.9%</td>
+      <td>0.2094</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>NONLIVINGAREA_MEDI</td>
+      <td>0.5400</td>
+      <td>927</td>
+      <td>0</td>
+      <td>43.1%</td>
+      <td>0.3559</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>FONDKAPREMONT_MODE</td>
+      <td>0.6801</td>
+      <td>4</td>
+      <td>reg oper account</td>
+      <td>74.8%</td>
+      <td>not specified</td>
+      <td>5.9%</td>
+    </tr>
+    <tr>
+      <td>HOUSETYPE_MODE</td>
+      <td>0.4919</td>
+      <td>3</td>
+      <td>block of flats</td>
+      <td>98.1%</td>
+      <td>terraced house</td>
+      <td>0.8%</td>
+    </tr>
+    <tr>
+      <td>WALLSMATERIAL_MODE</td>
+      <td>0.5022</td>
+      <td>7</td>
+      <td>Stone, brick</td>
+      <td>43.6%</td>
+      <td>Monolithic</td>
+      <td>0.9%</td>
+    </tr>
+    <tr>
+      <td>EMERGENCYSTATE_MODE</td>
+      <td>0.4651</td>
+      <td>2</td>
+      <td>No</td>
+      <td>98.7%</td>
+      <td>Yes</td>
+      <td>1.3%</td>
+    </tr>
+    <tr>
+      <td>DEF_30_CNT_SOCIAL_CIRCLE</td>
+      <td>0.0039</td>
+      <td>6</td>
+      <td>0</td>
+      <td>88.4%</td>
+      <td>6</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>DEF_60_CNT_SOCIAL_CIRCLE</td>
+      <td>0.0039</td>
+      <td>6</td>
+      <td>0</td>
+      <td>91.4%</td>
+      <td>5</td>
+      <td>0.0%</td>
+    </tr>
+  </tbody>
+</table>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <h4 class="caret" id="section2_2_3">Datetime features</h4>
+                    <ul class="nested">
+                        
+                        <p>No datetime features.</p>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <h4 class="caret" id="section2_2_4">Textual features</h4>
+                    <ul class="nested">
+                        
+                        <p>No textual features.</p>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <h4 class="caret" id="section2_2_5">Dropped features</h4>
+                    <ul class="nested">
+                        
+                        <p>Some features were excluded from the training set.</p>
+                        <p>Except TARGET variable which was used as target, also there were excluded variables, in which NaN rate exceeds <i>max_nan_rate</i> = 0.999. In addition to this, the variables with <i>max_constant_rate</i> > 0.999 excluded:</p>
+                        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>Название переменной</th>
+      <th>nan_rate</th>
+      <th>constant_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SK_ID_CURR</td>
+      <td>0.0</td>
+      <td>0.000125</td>
+    </tr>
+    <tr>
+      <td>FLAG_MOBIL</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_2</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_4</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_7</td>
+      <td>0.0</td>
+      <td>0.999750</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_10</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_12</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_15</td>
+      <td>0.0</td>
+      <td>0.999125</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_17</td>
+      <td>0.0</td>
+      <td>0.999875</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_19</td>
+      <td>0.0</td>
+      <td>0.999000</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_20</td>
+      <td>0.0</td>
+      <td>0.999250</td>
+    </tr>
+    <tr>
+      <td>FLAG_DOCUMENT_21</td>
+      <td>0.0</td>
+      <td>0.999750</td>
+    </tr>
+  </tbody>
+</table>
+                        
+
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>
+        
+            <li>
+    <h2 class="caret" id="section1">Feature importance</h2>
+    <ul class="nested">
+        
+            <p>Feature importance calculation method: <b>fast</b>.</p>
+            <p><img src=feature_importance.png alt="feature_importance"></p>
+        
+    </ul>
+</li>
+        
+            <li>
+    <h2 class="caret caret-down" id="section2">Detailed model results</h2>
+    <ul class="nested active">
+        
+            <li>
+    <h3 class="caret" id="section3">Results on validation sample</h3>
+    <ul class="nested">
+        <li>
+            <h4 class="caret" id="section3_2">ROC curve</h4>
+            <ul class="nested">
+                <p><img src=valid_roc_curve.png alt="AUC valid plot full"></p>
+            </ul>
+        </li>
+        <li>
+            <h4 class="caret" id="section3_3">ROC-PR curve</h4>
+            <ul class="nested">
+                <p><img src=valid_pr_curve.png alt="PR valid plot full"></p>
+            </ul>
+        </li>
+        <li>
+            <h4 class="caret" id="section3_4">Pie F1 metric</h4>
+            <ul class="nested">
+                <p><img src=valid_pie_f1_metric.png alt="Pie F1 metric"></p>
+            </ul>
+        </li>
+        <li>
+            <h4 class="caret" id="section3_5">Distribution of object predictions by bins</h4>
+            <ul class="nested">
+                <p><img src=valid_preds_distribution_by_bins.png alt="preds_distribution_by_bins"></p>
+                <p><img src=valid_distribution_of_logits.png alt="distribution_of_logits"></p>
+            </ul>
+        </li>
+        <li>
+            <h4 class="caret" id="section3_6">Distribution of Logits by bins</h4>
+            <ul class="nested">
+                <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Bin number</th>
+      <th>Amount of objects</th>
+      <th>Mean target</th>
+      <th>Min probability</th>
+      <th>Average probability</th>
+      <th>Max probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>400</td>
+      <td>0.2950</td>
+      <td>0.183896</td>
+      <td>0.251909</td>
+      <td>0.552156</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>400</td>
+      <td>0.2050</td>
+      <td>0.135087</td>
+      <td>0.155568</td>
+      <td>0.183891</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>400</td>
+      <td>0.1675</td>
+      <td>0.108465</td>
+      <td>0.121545</td>
+      <td>0.135023</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>400</td>
+      <td>0.1325</td>
+      <td>0.089989</td>
+      <td>0.098527</td>
+      <td>0.108379</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>400</td>
+      <td>0.1200</td>
+      <td>0.077722</td>
+      <td>0.083655</td>
+      <td>0.089916</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>400</td>
+      <td>0.1175</td>
+      <td>0.068818</td>
+      <td>0.073043</td>
+      <td>0.077709</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>400</td>
+      <td>0.0825</td>
+      <td>0.061284</td>
+      <td>0.065069</td>
+      <td>0.068817</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>400</td>
+      <td>0.0825</td>
+      <td>0.054873</td>
+      <td>0.058032</td>
+      <td>0.061279</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>400</td>
+      <td>0.0725</td>
+      <td>0.049288</td>
+      <td>0.051959</td>
+      <td>0.054864</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>400</td>
+      <td>0.0625</td>
+      <td>0.044331</td>
+      <td>0.046789</td>
+      <td>0.049278</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>400</td>
+      <td>0.0400</td>
+      <td>0.040094</td>
+      <td>0.041993</td>
+      <td>0.044309</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>400</td>
+      <td>0.0150</td>
+      <td>0.036273</td>
+      <td>0.038164</td>
+      <td>0.040089</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>400</td>
+      <td>0.0400</td>
+      <td>0.033007</td>
+      <td>0.034606</td>
+      <td>0.036267</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>400</td>
+      <td>0.0375</td>
+      <td>0.029841</td>
+      <td>0.031414</td>
+      <td>0.032993</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>400</td>
+      <td>0.0275</td>
+      <td>0.027028</td>
+      <td>0.028445</td>
+      <td>0.029840</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>400</td>
+      <td>0.0225</td>
+      <td>0.024334</td>
+      <td>0.025678</td>
+      <td>0.027026</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>400</td>
+      <td>0.0400</td>
+      <td>0.021635</td>
+      <td>0.022995</td>
+      <td>0.024334</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>400</td>
+      <td>0.0050</td>
+      <td>0.018513</td>
+      <td>0.020089</td>
+      <td>0.021634</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>400</td>
+      <td>0.0150</td>
+      <td>0.015235</td>
+      <td>0.016997</td>
+      <td>0.018497</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>400</td>
+      <td>0.0175</td>
+      <td>0.004503</td>
+      <td>0.012353</td>
+      <td>0.015228</td>
+    </tr>
+  </tbody>
+</table>
+            </ul>
+        </li>
+    </ul>
+</li>
+        
+    </ul>
+</li>
+        
+    </ul>
+    <script type="text/javascript">
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+    </script>
+</body>
+
+</html>
