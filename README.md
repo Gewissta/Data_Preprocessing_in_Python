@@ -14,7 +14,7 @@
 
 
 ## Опечатки
-Всю информацию по опечаткам отправляйте на [электронную почту](mailto:info@gewissta.ru).
+Всю информацию по опечаткам отправляйте на [электронную почту](mailto:info@gewissta.ru). Если есть проблемы с кодом, пользуйтесь кнопкой [New Issue](https://github.com/Gewissta/Data_Preprocessing_in_Python/issues).
 
 
 ## Обновления программного кода
