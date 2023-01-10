@@ -10,7 +10,7 @@
 
 Для любопытных на обложке книги - стилизованное изображение любимицы автора, кошки Матильды, прожившей 22 года. Собственно ей книга и посвящена.
 
-Данный репозиторий не содержит файлы данных размером свыше 100 мегабайт, папку со всеми файлами, включая файл train_data.csv (программный код также прилагается), вы найдете по [ссылке](https://drive.google.com/file/d/1mW2K4ycvKP8JcpmFt7p8E7aLK72Kcj9t/view?usp=share_link). Кроме того, папку с файлами и программный код вы можете скачать на [веб-сайте издательства "ДМК-Пресс"](https://dmkpress.com/catalog/computer/programming/python/978-5-93700-156-6/). Файл данных train_data.csv вы найдете на [странице соревнования American Express - Default Prediction](https://www.kaggle.com/competitions/amex-default-prediction/data).
+Данный репозиторий не содержит файлы данных размером свыше 100 мегабайт, папку со ВСЕМИ файлами, включая файл train_data.csv (программный код также прилагается), вы найдете по [ссылке](https://drive.google.com/file/d/1mW2K4ycvKP8JcpmFt7p8E7aLK72Kcj9t/view?usp=share_link). Кроме того, папку с файлами и программный код вы можете скачать на [веб-сайте издательства "ДМК-Пресс"](https://dmkpress.com/catalog/computer/programming/python/978-5-93700-156-6/). Отсутствующий файл данных train_data.csv вы найдете на [странице соревнования American Express - Default Prediction](https://www.kaggle.com/competitions/amex-default-prediction/data).
 
 
 ## Опечатки
